@@ -148,7 +148,7 @@ a {
 }
 @media (max-width: 1200px) {
   .profile .contact-info {
-    margin-top: 70px;
+    margin-top: 30px;
   }
 }
 @media (max-width: 450px) {
@@ -172,19 +172,19 @@ a {
 .profile .contact-presentation {
   text-align: left;
   font-weight: 300;
-  margin-top: 100px;
-  margin-bottom: 100px;
+  margin-top: 60px;
+  margin-bottom: 60px;
 }
 @media (max-width: 1200px) {
   .profile .contact-presentation {
-    margin-top: 70px;
-    margin-bottom: 70px;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 }
 @media (max-width: 850px) {
   .profile .contact-presentation {
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 30px;
+    margin-bottom: 30px;
   }
 }
 .profile svg {
