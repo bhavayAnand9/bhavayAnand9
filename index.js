@@ -24,25 +24,21 @@ app.use(morgan('combined', { stream: accessLogStream }))
 
 app.use(express.static(__dirname + '/static', { dotfiles: 'allow' } ))
 
-app.use((req, res) => {
-	res.send('Hello there !');
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-// app.get('/', function(req, res) {
-//     res.sendFile(path.join(__dirname + '/index.html'));
-// });
-
-// app.get('/logs', function(req, res) {
-//     try{
-//         if(req.query.password === "8190"){
-//             res.sendFile(path.join(__dirname + '/access.log'));
-//         } else {
-//             res.send();
-//         }
-//     } catch(e){
-//         res.send(e);
-//     }
-// });
+app.get('/logs', function(req, res) {
+    try{
+        if(req.query.password === "8190"){
+            res.sendFile(path.join(__dirname + '/access.log'));
+        } else {
+            res.send();
+        }
+    } catch(e){
+        res.send(e);
+    }
+});
 
 // Starting both http & https servers
 const httpServer = http.createServer(app);
