@@ -16,4 +16,12 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
+app.get('/logs', function(req, res) {
+    if(req.query.password === "bhavay"){
+        res.sendFile(path.join(__dirname + '/access.log'));
+    }else {
+        res.send();
+    }
+});
+
 app.listen(80);
