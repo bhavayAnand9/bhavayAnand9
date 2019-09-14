@@ -20,9 +20,20 @@ const credentials = {
 };
 
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }) 
+
 app.use(morgan('combined', { stream: accessLogStream }))
 
 app.use(express.static(__dirname + '/static', { dotfiles: 'allow' } ))
+
+app.use (function (req, res, next) {
+    if (req.secure) {
+            // request was via https, so do no special handling
+            next();
+    } else {
+            // request was via http, so redirect to https
+            res.redirect('https://' + req.headers.host + req.url);
+    }
+});
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
