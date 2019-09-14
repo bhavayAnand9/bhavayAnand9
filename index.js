@@ -5,7 +5,6 @@ var fs = require('fs')
 var morgan = require('morgan')
 var path = require('path')
 
-const child_process = require('child_process');
 
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }) 
 app.use(morgan('combined', { stream: accessLogStream }))
