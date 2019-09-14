@@ -8,14 +8,13 @@ var path = require('path')
 const http = require('http');
 const https = require('https');
 
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/www.bhavay.me/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/www.bhavay.me/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/www.bhavay.me/chain.pem', 'utf8');
-
 const options = {
     cert: fs.readFileSync('./sslcert/fullchain.pem'),
     key: fs.readFileSync('./sslcert/privkey.pem')
 };
+
+console.log(options.cert);
+console.log(options.key);
 
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }) 
 app.use(morgan('combined', { stream: accessLogStream }))
@@ -39,6 +38,7 @@ app.get('/logs', function(req, res) {
     }
 });
 
+https.createServer(options, app).listen(443);
+
 app.listen(80);
 
-https.createServer(options, app).listen(443);
