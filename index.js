@@ -17,10 +17,14 @@ app.get('/', function(req, res) {
 });
 
 app.get('/logs', function(req, res) {
-    if(req.query.password === "bhavay"){
-        res.sendFile(path.join(__dirname + '/access.log'));
-    }else {
-        res.send();
+    try{
+        if(req.query.password === "bhavay"){
+            res.sendFile(path.join(__dirname + '/access.log'));
+        } else {
+            res.send();
+        }
+    } catch(e){
+        res.send(e);
     }
 });
 
