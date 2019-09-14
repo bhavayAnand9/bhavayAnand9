@@ -1,20 +1,29 @@
 var express = require('express');
-var app = express();
 var path = require('path');
 var fs = require('fs')
 var morgan = require('morgan')
 var path = require('path')
 
+const mzfs = require("mz/fs");
+
 const http = require('http');
 const https = require('https');
 
-const options = {
-    cert: fs.readFileSync('./sslcert/fullchain.pem'),
-    key: fs.readFileSync('./sslcert/privkey.pem')
-};
+// const options = {
+//     cert: fs.readFileSync('./sslcert/fullchain.pem'),
+//     key: fs.readFileSync('./sslcert/privkey.pem')
+// };
 
-console.log(options.cert);
-console.log(options.key);
+const {key, cert} = await (async () => {
+	const certdir = (await mzfs.readdir("/etc/letsencrypt/live"))[0];
+
+	return {
+		key: await mzfs.readFile(`/etc/letsencrypt/live/${certdir}/privkey.pem`),
+		cert: await mzfs.readFile(`/etc/letsencrypt/live/${certdir}/fullchain.pem`)
+	}
+})();
+
+var app = express();
 
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }) 
 app.use(morgan('combined', { stream: accessLogStream }))
@@ -38,7 +47,9 @@ app.get('/logs', function(req, res) {
     }
 });
 
-https.createServer(options, app).listen(443);
+const httpsServer = https.createServer({key, cert}, app).listen(443)
 
-app.listen(80);
+console.log(httpsServer);
+
+// app.listen(80);
 
