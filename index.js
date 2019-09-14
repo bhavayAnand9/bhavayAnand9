@@ -14,7 +14,7 @@ const https = require('https');
 //     key: fs.readFileSync('./sslcert/privkey.pem')
 // };
 
-const {key, cert} = await (async () => {
+const {key, cert} = (async () => {
 	const certdir = (await mzfs.readdir("/etc/letsencrypt/live"))[0];
 
 	return {
