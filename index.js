@@ -7,9 +7,9 @@ const express = require('express');
 const app = express();
 
 // Certificate
-const privateKey = fs.readFileSync('/etc/letsencrypt/live/www.bhavay.com/privkey.pem', 'utf8');
-const certificate = fs.readFileSync('/etc/letsencrypt/live/www.bhavay.com/cert.pem', 'utf8');
-const ca = fs.readFileSync('/etc/letsencrypt/live/www.bhavay.com/chain.pem', 'utf8');
+const privateKey = fs.readFileSync('./sslcert/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('./sslcert/cert.pem', 'utf8');
+const ca = fs.readFileSync('./sslcert/chain.pem', 'utf8');
 
 const credentials = {
 	key: privateKey,
