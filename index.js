@@ -3,8 +3,10 @@ const fs = require('fs');
 const http = require('http');
 const https = require('https');
 const express = require('express');
-
+var morgan = require('morgan')
 const app = express();
+var path = require('path')
+
 
 // Certificate
 const privateKey = fs.readFileSync('./sslcert/privkey.pem', 'utf8');
@@ -17,8 +19,25 @@ const credentials = {
 	ca: ca
 };
 
-app.use((req, res) => {
-	res.send('Hello there !');
+var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }) 
+app.use(morgan('combined', { stream: accessLogStream }))
+
+app.use(express.static(__dirname + '/static', { dotfiles: 'allow' } ))
+
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
+});
+
+app.get('/logs', function(req, res) {
+    try{
+        if(req.query.password === "8190"){
+            res.sendFile(path.join(__dirname + '/access.log'));
+        } else {
+            res.send();
+        }
+    } catch(e){
+        res.send(e);
+    }
 });
 
 // Starting both http & https servers
