@@ -1,55 +1,34 @@
-var express = require('express');
-var path = require('path');
-var fs = require('fs')
-var morgan = require('morgan')
-var path = require('path')
-
-const mzfs = require("mz/fs");
-
+// Dependencies
+const fs = require('fs');
 const http = require('http');
 const https = require('https');
+const express = require('express');
 
-// const options = {
-//     cert: fs.readFileSync('./sslcert/fullchain.pem'),
-//     key: fs.readFileSync('./sslcert/privkey.pem')
-// };
+const app = express();
 
-const {key, cert} = (async () => {
-	const certdir = (await mzfs.readdir("/etc/letsencrypt/live"))[0];
+// Certificate
+const privateKey = fs.readFileSync('/etc/letsencrypt/live/www.bhavay.com/privkey.pem', 'utf8');
+const certificate = fs.readFileSync('/etc/letsencrypt/live/www.bhavay.com/cert.pem', 'utf8');
+const ca = fs.readFileSync('/etc/letsencrypt/live/www.bhavay.com/chain.pem', 'utf8');
 
-	return {
-		key: await mzfs.readFile(`/etc/letsencrypt/live/${certdir}/privkey.pem`),
-		cert: await mzfs.readFile(`/etc/letsencrypt/live/${certdir}/fullchain.pem`)
-	}
-})();
+const credentials = {
+	key: privateKey,
+	cert: certificate,
+	ca: ca
+};
 
-var app = express();
-
-var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }) 
-app.use(morgan('combined', { stream: accessLogStream }))
-
-// app.use(express.static(__dirname, { dotfiles: 'allow' } ));
-app.use(express.static(__dirname + '/static', { dotfiles: 'allow' } ))
-
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
+app.use((req, res) => {
+	res.send('Hello there !');
 });
 
-app.get('/logs', function(req, res) {
-    try{
-        if(req.query.password === "8190"){
-            res.sendFile(path.join(__dirname + '/access.log'));
-        } else {
-            res.send();
-        }
-    } catch(e){
-        res.send(e);
-    }
+// Starting both http & https servers
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(credentials, app);
+
+httpServer.listen(80, () => {
+	console.log('HTTP Server running on port 80');
 });
 
-const httpsServer = https.createServer({key, cert}, app).listen(443)
-
-console.log(httpsServer);
-
-// app.listen(80);
-
+httpsServer.listen(443, () => {
+	console.log('HTTPS Server running on port 443');
+});
