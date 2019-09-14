@@ -14,27 +14,6 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.post('/push-event', function(req, res){
-    try{
-        if(req.query.password === "8190"){
-
-            console.log('Spawning sync.sh');
-            const process = child_process.spawn('./sync.sh');
-            process.on('exit', () => {
-                console.log('process exit');
-            });
-            process.stdout.on('data', (data) => {
-                console.log('Output: ' + data.toString('utf8'));
-            });
-
-        } else {
-            res.send();
-        }
-    } catch(e){
-        res.send(e);
-    }
-});
-
 app.get('/logs', function(req, res) {
     try{
         if(req.query.password === "8190"){
