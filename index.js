@@ -6,7 +6,7 @@ const express = require('express');
 var morgan = require('morgan')
 const app = express();
 var path = require('path')
-
+var helmet = require('helmet');
 
 // Certificate
 const privateKey = fs.readFileSync('./sslcert/privkey.pem', 'utf8');
@@ -22,7 +22,7 @@ const credentials = {
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' }) 
 
 app.use(morgan('combined', { stream: accessLogStream }))
-
+app.use(helmet())
 app.use(express.static(__dirname + '/static', { dotfiles: 'allow' } ))
 
 app.use (function (req, res, next) {
