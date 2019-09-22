@@ -60,7 +60,6 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', serif; font-weight: 700; col
   
 /*--- HOME ---*/
 #home {
-  background: url('https://s17.postimg.org/m4bfqfgn3/fog_1005445_1920.jpg') no-repeat center center fixed;
   background-size: cover; text-shadow: 1px 1px 0 rgba(255,255,255,0.5); text-align: center;
 }
 #home h1 { font-family: 'Advent Pro', sans-serif; font-size: 96px; color: #000; display: inline-block; margin: 0; padding: 0; line-height: 90px; margin-top: 60px; }
@@ -96,7 +95,6 @@ h1, h2, h3, h4, h5, h6 { font-family: 'Montserrat', serif; font-weight: 700; col
 
 /*--- CONTACT ---*/
 #contact {
-  background: url('https://s18.postimg.org/z7eckrogp/seagulls_984529_1920.jpg') no-repeat top center fixed;
   background-size: cover;
 }
 

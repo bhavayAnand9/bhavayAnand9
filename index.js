@@ -30,9 +30,11 @@ app.use(express.static("public"));
 app.use (function (req, res, next) {
     if (req.secure) {
             // request was via https, so do no special handling
+            console.log("no redirect")
             next();
     } else {
             // request was via http, so redirect to https
+            console.log("redirect")
             res.redirect('https://' + req.headers.host + req.url);
     }
 });
@@ -41,17 +43,6 @@ app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + './public/index.html'));
 });
 
-app.get('/style.css', function(req, res) {
-    res.sendFile(path.join(__dirname + './public/style.css'));
-});
-
-app.get('/script.js', function(req, res) {
-    res.sendFile(path.join(__dirname + './public/script.js'));
-});
-
-app.get('/robot.txt', function(req, res) {
-    res.sendFile(path.join(__dirname + './public/robot.txt'));
-});
 
 app.get('/logs', function(req, res) {
     try{
