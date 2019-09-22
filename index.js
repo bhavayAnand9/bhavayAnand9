@@ -23,7 +23,7 @@ var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {
 
 app.use(morgan('combined', { stream: accessLogStream }))
 app.use(helmet())
-// app.use(express.static(__dirname + '/static', { dotfiles: 'allow' } ))
+app.use(express.static(__dirname + '/static', { dotfiles: 'allow' } ))
 
 app.use(express.static("public"));
 
